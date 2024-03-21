@@ -1,3 +1,4 @@
+const { Products } = require("../models/productSchema");
 const { Users } = require("../models/userSchema");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -130,10 +131,66 @@ const currentUser = async (req, res, next) => {
   }
 };
 
+const updateUser = async (req, res, next) => {
+  const { bloodType, height, age, weight, desiredWeight } = req.body;
+  const { _id } = req.user;
+
+  const dailyCaloricIntake = Math.round(
+    10 * weight + 6.25 * height - 5 * age - 161 - 10 * (weight - desiredWeight)
+  );
+
+  const products = await Products.find({});
+
+  const notAllowedProducts = products.filter(
+    (product) => product.groupBloodNotAllowed[bloodType] === true
+  );
+
+  if (!notAllowedProducts.length) {
+    res.status(404).json({
+      message: "Not found",
+    });
+  }
+
+  await Users.findByIdAndUpdate(
+    _id,
+    {
+      bloodType,
+      height,
+      age,
+      weight,
+      desiredWeight,
+      dailyRate: dailyCaloricIntake,
+      notAllowedProducts,
+    },
+    {
+      new: true,
+    }
+  );
+
+  const user = {
+    bloodType,
+    height,
+    age,
+    weight,
+    desiredWeight,
+    dailyRate: dailyCaloricIntake,
+    notAllowedProducts,
+  };
+
+  res.json({
+    status: "success",
+    code: 200,
+    data: {
+      user,
+    },
+  });
+};
+
 module.exports = {
   getUsers,
   signupUser,
   loginUser,
   logoutUser,
   currentUser,
+  updateUser,
 };
