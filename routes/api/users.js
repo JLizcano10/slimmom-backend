@@ -13,5 +13,6 @@ router.post("/login", ctrl.loginUser);
 router.get("/logout", auth, ctrl.logoutUser);
 
 router.get("/current", auth, ctrl.currentUser);
+router.patch("/", auth, validateJoiSchema(UserJoiSchema), ctrl.updateUser);
 
 module.exports = router;
