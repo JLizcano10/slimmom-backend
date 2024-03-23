@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const usersRouter = require("./routes/api/users");
 const productsRouter = require("./routes/api/products");
+const dailyCaloriesRouter = require("./routes/api/dailyCalories");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 require("./config/config-passport");
 app.use("/api/users", usersRouter);
 app.use("/api/products", productsRouter);
+app.use("/api/dailyCalories", dailyCaloriesRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });

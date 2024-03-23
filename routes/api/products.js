@@ -12,6 +12,6 @@ router.post(
   validateJoiSchema(productJoiSchema),
   ctrl.getDietProductsByBloodType
 );
-router.delete("/:productId", () => {});
+// router.delete("/:productId", () => {});
 
 module.exports = router;
