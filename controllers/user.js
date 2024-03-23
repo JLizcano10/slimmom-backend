@@ -135,7 +135,7 @@ const updateUser = async (req, res, next) => {
   const { bloodType, height, age, weight, desiredWeight } = req.body;
   const { _id } = req.user;
 
-  const dailyCaloricIntake = Math.round(
+  const dailyRate = Math.round(
     10 * weight + 6.25 * height - 5 * age - 161 - 10 * (weight - desiredWeight)
   );
 
@@ -159,7 +159,7 @@ const updateUser = async (req, res, next) => {
       age,
       weight,
       desiredWeight,
-      dailyRate: dailyCaloricIntake,
+      dailyRate,
       notAllowedProducts,
     },
     {
@@ -173,7 +173,41 @@ const updateUser = async (req, res, next) => {
     age,
     weight,
     desiredWeight,
-    dailyRate: dailyCaloricIntake,
+    dailyRate,
+    notAllowedProducts,
+  };
+
+  res.json({
+    status: "success",
+    code: 200,
+    data: {
+      user,
+    },
+  });
+};
+
+const getDietCaloriesForUser = async (req, res, next) => {
+  const { height, age, weight, desiredWeight } = req.body;
+  const { bloodType } = req.user;
+
+  const dailyRate = Math.round(
+    10 * weight + 6.25 * height - 5 * age - 161 - 10 * (weight - desiredWeight)
+  );
+
+  const products = await Products.find({});
+
+  const notAllowedProducts = products.filter(
+    (product) => product.groupBloodNotAllowed[bloodType] === true
+  );
+
+  if (!notAllowedProducts.length) {
+    res.status(404).json({
+      message: "Not found",
+    });
+  }
+
+  const user = {
+    dailyRate,
     notAllowedProducts,
   };
 
@@ -193,4 +227,5 @@ module.exports = {
   logoutUser,
   currentUser,
   updateUser,
+  getDietCaloriesForUser,
 };

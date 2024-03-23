@@ -12,7 +12,7 @@ const getAllProducts = async (req, res, next) => {
 const getDietProductsByBloodType = async (req, res, next) => {
   const { bloodType, height, age, currentWeight, desiredWeight } = req.body;
 
-  const dailyCaloricIntake = Math.round(
+  const dailyRate = Math.round(
     10 * currentWeight +
       6.25 * height -
       5 * age -
@@ -36,7 +36,7 @@ const getDietProductsByBloodType = async (req, res, next) => {
     res.status(200).json({
       result: {
         notAllowedProducts,
-        dailyCaloricIntake,
+        dailyRate,
       },
     });
   } catch (error) {
