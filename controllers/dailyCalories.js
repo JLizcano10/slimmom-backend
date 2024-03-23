@@ -1,4 +1,5 @@
 const { DailyCalories } = require("../models/dailyCalorieSchema");
+const { Users } = require("../models/userSchema");
 
 const addConsumedProduct = async (req, res, next) => {
   const { _id } = req.user;
@@ -74,6 +75,9 @@ const getDailyInformation = async (req, res) => {
     const { _id } = req.user;
     const { date } = req.query;
 
+    const userInfo = await Users.findOne({ _id });
+    const dailyRate = userInfo.dailyRate;
+
     const result = await DailyCalories.find({ owner: _id, date });
 
     if (!result.length) {
@@ -90,6 +94,10 @@ const getDailyInformation = async (req, res) => {
 
     const dateAdded = result[0].date;
 
+    const percentageOfNormal = (caloricityPerDay / dailyRate) * 100;
+
+    const left = dailyRate - caloricityPerDay;
+
     res.status(200).json({
       status: "success",
       data: {
@@ -97,6 +105,8 @@ const getDailyInformation = async (req, res) => {
         date: new Date(date),
         caloricityPerDay,
         dateAdded,
+        percentageOfNormal,
+        left,
       },
     });
   } catch (error) {

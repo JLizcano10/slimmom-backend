@@ -1,5 +1,15 @@
 const { Schema, model } = require("mongoose");
 
+const Joi = require("joi");
+
+const dailyCalorieJoiSchema = Joi.object({
+  date: Joi.date().iso().required(),
+  product: Joi.string().required(),
+  weight: Joi.number().integer().min(20).max(1000).required(),
+  // OJO!!! Calories es lo que vendrá del formulario.
+  calories: Joi.number(),
+});
+
 const dailyCalorieSchema = new Schema(
   {
     owner: {
@@ -29,5 +39,6 @@ const dailyCalorieSchema = new Schema(
 const DailyCalories = model("dailyCalories", dailyCalorieSchema);
 
 module.exports = {
+  dailyCalorieJoiSchema,
   DailyCalories,
 };
