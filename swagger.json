@@ -1,0 +1,904 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Slimmom Api",
+    "description": "Slimmom project documentation",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001",
+      "description": "Main development server"
+    }
+  ],
+
+  "tags": [
+    {
+      "name": "User",
+      "description": "User endpoints"
+    },
+    {
+      "name": "Products",
+      "description": "Products endpoints"
+    },
+    {
+      "name": "Daily Calories",
+      "description": "Daily calories endpoints"
+    }
+  ],
+
+  "paths": {
+    "/api/users/signup": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User signup",
+        "parameters": [],
+        "security": [],
+        "requestBody": {
+          "description": "Signup object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignupRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "description": "Email is already in use"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User Login",
+        "parameters": [],
+        "security": [],
+        "requestBody": {
+          "description": "Login object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unauthorized, Email or password is wrong"
+          }
+        }
+      }
+    },
+    "/api/users/logout": {
+      "get": {
+        "tags": ["User"],
+        "summary": "User logout",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "204": {
+            "description": "Logout successfull",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponse"
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Not authorized (bad token)"
+          }
+        }
+      }
+    },
+    "/api/users/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "User current",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Not authorized (bad token)"
+          }
+        }
+      }
+    },
+    "/api/users/": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "User Update",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "description": "Update object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserResponse"
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Not authorized (bad token)"
+          },
+
+          "404": {
+            "description": "Not found (Not found products)"
+          }
+        }
+      }
+    },
+    "/api/users/userCalories": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Products for the user according to his blood type",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "description": "products by blood type for user object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCaloriesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCaloriesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found (Not found products)"
+          }
+        }
+      }
+    },
+    "/api/products/allProducts": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get All Products",
+
+        "parameters": [],
+        "security": [],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getAllProductsResponse"
+                }
+              }
+            }
+          },
+
+          "404": {
+            "description": "Not found (Not found products)"
+          }
+        }
+      }
+    },
+    "/api/products/query": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get Products By Query",
+
+        "parameters": [
+          {
+            "name": "title",
+            "in": "path",
+            "description": "title of search product",
+            "example": "Amaranth",
+            "required": true
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProductsByQueryResponse"
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Not authorized (bad token)"
+          },
+          "404": {
+            "description": "Not found (Not found products)"
+          }
+        }
+      }
+    },
+    "/api/products/": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Products by blood type",
+        "parameters": [],
+        "security": [],
+        "requestBody": {
+          "description": "products by blood type object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductsByBloodRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsByBloodResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found (Not found products)"
+          }
+        }
+      }
+    },
+    "/api/dailyCalories/query": {
+      "get": {
+        "tags": ["Daily Calories"],
+        "summary": "Get daily products and calories consumed",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "description": "Date of consume",
+            "example": "2024-03-24",
+            "required": true
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDailyCaloriesResponse"
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Not authorized (bad token)"
+          },
+          "404": {
+            "description": "Not found (Not found products on this date)"
+          }
+        }
+      }
+    },
+    "/api/dailyCalories/": {
+      "post": {
+        "tags": ["Daily Calories"],
+        "summary": "Add consumed product",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddConsumedProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddConsumedProductResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized (bad token)"
+          }
+        }
+      }
+    },
+    "/api/dailyCalories/:productId": {
+      "delete": {
+        "tags": ["Daily Calories"],
+        "summary": "remove products from the user",
+        "parameters": [
+          {
+            "name": ":productId",
+            "in": "path",
+            "description": "Product identification number",
+            "example": "65fe60c44fc5b502e0d3ccae",
+            "required": true
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteProductResponse"
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Not authorized (bad token)"
+          },
+          "404": {
+            "description": "Not found (Not found products for delete)"
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "SignupRequest": {
+        "type": "object",
+        "required": [true],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User name",
+            "example": "Mary"
+          },
+          "password": {
+            "type": "string",
+            "description": "User password",
+            "example": "mary123"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "mary@mail.com"
+          }
+        }
+      },
+      "SignupResponse": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "string",
+            "description": "Status code",
+            "data": {
+              "user": "user name",
+              "email": "user email"
+            },
+            "example": {
+              "status": "Created",
+              "code": 201,
+              "data": {
+                "user": {
+                  "name": "Mary",
+                  "email": "mary@mail.com"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "LoginRequest": {
+        "type": "object",
+        "required": [true],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "mary123@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User password",
+            "example": "mary123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "object",
+            "description": "Status code",
+            "example": {
+              "status": "success",
+              "code": 200,
+              "data": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZmUyZTllNTJiMjI4ODhkYmE0YTczYyIsImlhdCI6MTcxMTIxNzQ5NCwiZXhwIjoxNzExMjIxMDk0fQ.urx2kk0G0iG9yfJgxnFVDjsTkZFsQ8glviljvk19fjI",
+                "user": {
+                  "email": "mary@mail.com",
+                  "name": "Mary"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "LogoutResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "example": 204
+          }
+        }
+      },
+
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "description": "User data",
+            "example": {
+              "user": {
+                "id": "63a865cb90e609b21b2b248f",
+                "name": "Mary",
+                "email": "mary@mail.com",
+                "bloodType": 2,
+                "dailyRate": 1400,
+                "height": 150,
+                "age": 50,
+                "weight": 65,
+                "desiredWeight": 65,
+                "notAllowedProducts": "Array of not recomendet products"
+              }
+            }
+          }
+        }
+      },
+
+      "UpdateUserRequest": {
+        "type": "object",
+        "required": [true],
+        "properties": {
+          "bloodType": {
+            "type": "number",
+            "description": "User bloodType",
+            "required": true,
+            "example": 2
+          },
+          "height": {
+            "type": "number",
+            "description": "User height",
+            "required": true,
+            "example": 168
+          },
+          "age": {
+            "type": "number",
+            "description": "User age",
+            "required": true,
+            "example": 28
+          },
+          "weight": {
+            "type": "number",
+            "description": "User currently weight",
+            "required": true,
+            "example": 90
+          },
+          "desiredWeight": {
+            "type": "number",
+            "description": "User desired weight",
+            "required": true,
+            "example": 60
+          }
+        }
+      },
+      "UpdateUserResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "user": {
+                "type": "object",
+                "description": "User data",
+                "example": {
+                  "bloodType": 2,
+                  "height": 168,
+                  "age": 28,
+                  "weight": 90,
+                  "desiredWeight": 60,
+                  "dailyRate": 1400,
+                  "notRecProducts": "Array of not recomended products"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "UserCaloriesRequest": {
+        "type": "object",
+        "required": [true],
+        "properties": {
+          "height": {
+            "type": "number",
+            "description": "User height",
+            "required": true,
+            "example": 168
+          },
+          "age": {
+            "type": "number",
+            "description": "User age",
+            "required": true,
+            "example": 28
+          },
+          "currentWeight": {
+            "type": "number",
+            "description": "User currently weight",
+            "required": true,
+            "example": 90
+          },
+          "desiredWeight": {
+            "type": "number",
+            "description": "User desired weight",
+            "required": true,
+            "example": 60
+          }
+        }
+      },
+      "UserCaloriesResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "result": {
+                "type": "object",
+                "description": "Products not recommended for user by blood type",
+                "example": {
+                  "dailyRate": 1400,
+                  "notAllowedProducts": "Array of not recomended products"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "getAllProductsResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "example": [
+              {
+                "_id": "5d51694802b2373622ff5543",
+                "categories": ["cereals"],
+                "weight": 100,
+                "title": "Amaranth",
+                "calories": 371,
+                "groupBloodNotAllowed": [null, true, false, false, false],
+                "__v": 0
+              }
+            ]
+          }
+        }
+      },
+
+      "GetProductsByQueryResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "example": [
+              {
+                "_id": "5d51694802b2373622ff5543",
+                "categories": ["cereals"],
+                "weight": 100,
+                "title": "Amaranth",
+                "calories": 371,
+                "groupBloodNotAllowed": [null, true, false, false, false],
+                "__v": 0
+              }
+            ]
+          }
+        }
+      },
+
+      "ProductsByBloodRequest": {
+        "type": "object",
+        "required": [true],
+        "properties": {
+          "bloodType": {
+            "type": "number",
+            "description": "User bloodType",
+            "required": true,
+            "example": 2
+          },
+          "height": {
+            "type": "number",
+            "description": "User height",
+            "required": true,
+            "example": 168
+          },
+          "age": {
+            "type": "number",
+            "description": "User age",
+            "required": true,
+            "example": 28
+          },
+          "currentWeight": {
+            "type": "number",
+            "description": "User currently weight",
+            "required": true,
+            "example": 90
+          },
+          "desiredWeight": {
+            "type": "number",
+            "description": "User desired weight",
+            "required": true,
+            "example": 60
+          }
+        }
+      },
+      "ProductsByBloodResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "description": "Code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "result": {
+                "type": "object",
+                "description": "Products by blood type",
+                "example": {
+                  "dailyRate": 1400,
+                  "notAllowedProducts": "Array of not recomended products"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "GetDailyCaloriesResponse": {
+        "type": "object",
+        "required": ["status", "data"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Indicates the status of the response",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "description": "Contains the main data of the response",
+            "properties": {
+              "result": {
+                "type": "array",
+                "description": "Array of products consumed by user"
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time",
+                "description": "A date related to the response",
+                "example": "2024-03-24"
+              },
+              "caloricityPerDay": {
+                "type": "number",
+                "description": "Information about daily caloric intake",
+                "example": 1400
+              },
+              "dateAdded": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Date related to the addition of data",
+                "example": "2024-03-24"
+              },
+              "percentageOfNormal": {
+                "type": "number",
+                "description": "Percentage related to the response",
+                "example": 75
+              },
+              "left": {
+                "type": "number",
+                "description": "Information related to what's left",
+                "example": 257
+              }
+            }
+          }
+        }
+      },
+
+      "AddConsumedProductRequest": {
+        "type": "object",
+        "required": ["weight", "product", "date", "calories"],
+        "properties": {
+          "weight": {
+            "type": "number",
+            "description": "Weight of the consumed product",
+            "example": 100
+          },
+          "product": {
+            "type": "string",
+            "description": "Name of the consumed product",
+            "example": "Lean pork"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the product was consumed (YYYY-MM-DD)",
+            "example": "2023-08-14"
+          },
+          "calories": {
+            "type": "number",
+            "description": "Calories per 100 grams of the product",
+            "example": 160
+          }
+        }
+      },
+      "AddConsumedProductResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Indicates the status of the response",
+            "example": "success"
+          },
+          "removedProduct": {
+            "type": "object",
+            "description": "Product information added"
+          }
+        }
+      },
+
+      "DeleteProductResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Indicates the status of the response",
+            "example": "success"
+          },
+          "removedProduct": {
+            "type": "object",
+            "description": "Product information removed"
+          }
+        }
+      }
+    }
+  }
+}

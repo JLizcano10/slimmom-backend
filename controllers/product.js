@@ -35,8 +35,8 @@ const getDietProductsByBloodType = async (req, res, next) => {
 
     res.status(200).json({
       result: {
-        notAllowedProducts,
         dailyRate,
+        notAllowedProducts,
       },
     });
   } catch (error) {

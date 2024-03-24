@@ -14,5 +14,6 @@ router.get("/logout", auth, ctrl.logoutUser);
 
 router.get("/current", auth, ctrl.currentUser);
 router.patch("/", auth, validateJoiSchema(UserJoiSchema), ctrl.updateUser);
+router.post("/userCalories", auth, ctrl.getDietCaloriesForUser);
 
 module.exports = router;
