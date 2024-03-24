@@ -41,7 +41,7 @@ const addConsumedProduct = async (req, res, next) => {
   }
 };
 
-const deleteConsumedProductById = async (req, res) => {
+const deleteConsumedProductById = async (req, res, next) => {
   try {
     const { productId } = req.params;
     const { _id } = req.user;
@@ -54,7 +54,7 @@ const deleteConsumedProductById = async (req, res) => {
     if (!removedProduct) {
       return res.status(404).json({
         status: "error",
-        message: `Product with id: '${productId}' not found or unauthorized to delete`,
+        message: `Product with id: '${productId}' not found to delete`,
       });
     }
 
@@ -63,10 +63,7 @@ const deleteConsumedProductById = async (req, res) => {
       removedProduct,
     });
   } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: error.message,
-    });
+    next(error);
   }
 };
 

@@ -52,7 +52,7 @@ const loginUser = async (req, res, next) => {
     const existingUser = await Users.findOne({ email });
 
     if (!existingUser || !existingUser.validPassword(password)) {
-      return res.status(401).json({
+      return res.status(400).json({
         status: "unauthorized",
         code: 400,
         message: "Email or password is wrong",
@@ -194,30 +194,34 @@ const getDietCaloriesForUser = async (req, res, next) => {
     10 * weight + 6.25 * height - 5 * age - 161 - 10 * (weight - desiredWeight)
   );
 
-  const products = await Products.find({});
+  try {
+    const products = await Products.find({});
 
-  const notAllowedProducts = products.filter(
-    (product) => product.groupBloodNotAllowed[bloodType] === true
-  );
+    const notAllowedProducts = products.filter(
+      (product) => product.groupBloodNotAllowed[bloodType] === true
+    );
 
-  if (!notAllowedProducts.length) {
-    res.status(404).json({
-      message: "Not found",
+    if (!notAllowedProducts.length) {
+      res.status(404).json({
+        message: "Not found",
+      });
+    }
+
+    const user = {
+      dailyRate,
+      notAllowedProducts,
+    };
+
+    res.json({
+      status: "success",
+      code: 200,
+      data: {
+        user,
+      },
     });
+  } catch (error) {
+    next(error);
   }
-
-  const user = {
-    dailyRate,
-    notAllowedProducts,
-  };
-
-  res.json({
-    status: "success",
-    code: 200,
-    data: {
-      user,
-    },
-  });
 };
 
 module.exports = {
