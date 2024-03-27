@@ -22,7 +22,7 @@ const signupUser = async (req, res, next) => {
     return res.status(409).json({
       status: "error",
       code: 409,
-      message: "Email is already in use",
+      message: "El correo electrónico ya está en uso.",
       data: "Conflict",
     });
   }
@@ -55,7 +55,7 @@ const loginUser = async (req, res, next) => {
       return res.status(400).json({
         status: "unauthorized",
         code: 400,
-        message: "Email or password is wrong",
+        message: "Email o contraseña son incorrectos",
       });
     }
 
@@ -147,7 +147,7 @@ const updateUser = async (req, res, next) => {
 
   if (!notAllowedProducts.length) {
     res.status(404).json({
-      message: "Not found",
+      message: "Recurso no encontrado",
     });
   }
 
@@ -203,7 +203,7 @@ const getDietCaloriesForUser = async (req, res, next) => {
 
     if (!notAllowedProducts.length) {
       res.status(404).json({
-        message: "Not found",
+        message: "Recurso no encontrado",
       });
     }
 

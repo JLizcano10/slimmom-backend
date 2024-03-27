@@ -24,7 +24,7 @@ app.use("/api/dailyCalories", dailyCaloriesRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((req, res) => {
-  res.status(404).json({ message: "Not found" });
+  res.status(404).json({ message: "Recurso no encontrado" });
 });
 
 app.use((err, req, res, next) => {

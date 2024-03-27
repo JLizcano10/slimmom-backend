@@ -29,7 +29,7 @@ const getDietProductsByBloodType = async (req, res, next) => {
 
     if (!notAllowedProducts.length) {
       res.status(404).json({
-        message: "Not found",
+        message: "Recurso no encontrado",
       });
     }
 
@@ -53,7 +53,9 @@ const getProductByQuery = async (req, res, next) => {
     });
 
     if (dataProducts.length === 0) {
-      return res.status(404).json({ message: "No products found" });
+      return res
+        .status(404)
+        .json({ message: "No hay productos que coincidan con su busqueda" });
     }
 
     res.status(200).json({ data: dataProducts });

@@ -54,7 +54,7 @@ const deleteConsumedProductById = async (req, res, next) => {
     if (!removedProduct) {
       return res.status(404).json({
         status: "error",
-        message: `Product with id: '${productId}' not found to delete`,
+        message: `El producto con id: '${productId}' no existe`,
       });
     }
 
@@ -80,7 +80,7 @@ const getDailyInformation = async (req, res) => {
     if (!result.length) {
       return res.status(404).json({
         status: "error",
-        message: "Added products not found on this date",
+        message: "No hay productos agregados para esta fecha",
       });
     }
 
