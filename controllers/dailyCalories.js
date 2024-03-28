@@ -91,7 +91,7 @@ const getDailyInformation = async (req, res) => {
 
     const dateAdded = result[0].date;
 
-    const percentageOfNormal = (caloricityPerDay / dailyRate) * 100;
+    const percentageOfNormal = parseInt((caloricityPerDay / dailyRate) * 100);
 
     const left = dailyRate - caloricityPerDay;
 

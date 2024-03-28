@@ -63,7 +63,7 @@ const loginUser = async (req, res, next) => {
       id: existingUser.id,
     };
 
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "12h" });
 
     existingUser.token = token;
     existingUser.bloodType = bloodType;
