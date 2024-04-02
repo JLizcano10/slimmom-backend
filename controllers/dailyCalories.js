@@ -67,7 +67,7 @@ const deleteConsumedProductById = async (req, res, next) => {
   }
 };
 
-const getDailyInformation = async (req, res) => {
+const getDailyInformation = async (req, res, next) => {
   try {
     const { _id } = req.user;
     const { date } = req.query;
