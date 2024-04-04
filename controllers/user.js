@@ -98,7 +98,6 @@ const logoutUser = async (req, res, next) => {
 
 const currentUser = async (req, res, next) => {
   try {
-    // Para no pasar password y token
     const {
       _id,
       name,
