@@ -9,6 +9,10 @@
     {
       "url": "http://localhost:3001",
       "description": "Main development server"
+    },
+    {
+      "url": "https://slimmom-backend.onrender.com",
+      "description": "Live Cloud Server"
     }
   ],
 
